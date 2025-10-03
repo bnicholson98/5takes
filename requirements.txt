@@ -8,5 +8,6 @@ black>=23.0.0  # Code formatter
 flake8>=6.0.0  # Linting
 mypy>=1.4.0  # Type checking
 
-# Optional dependencies
-rich>=13.5.0  # Rich terminal formatting (optional enhancement)
+# Optional enhancements
+rich>=13.5.0  # Rich terminal formatting (optional)
+blessed>=1.20.0  # Advanced terminal handling (optional)

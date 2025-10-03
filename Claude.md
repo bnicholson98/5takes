@@ -57,20 +57,15 @@ Each card has a point value (points are penalties - lower is better):
 │   ├── game/
 │   │   ├── __init__.py
 │   │   ├── card.py     # Card class and deck management
-│   │   ├── player.py   # Player class (human and AI)
+│   │   ├── player.py   # Player class
 │   │   ├── table.py    # Game table and row management
 │   │   ├── game.py     # Main game logic and round management
 │   │   └── rules.py    # Game rules and scoring logic
-│   ├── ui/
-│   │   ├── __init__.py
-│   │   ├── display.py  # Terminal display and formatting
-│   │   ├── input.py    # User input handling
-│   │   └── colors.py   # Terminal color schemes
-│   └── ai/
+│   └── ui/
 │       ├── __init__.py
-│       ├── base_ai.py  # Base AI player class
-│       ├── easy_ai.py  # Simple AI strategy
-│       └── hard_ai.py  # Advanced AI strategy
+│       ├── display.py  # Terminal display and formatting
+│       ├── input.py    # User input handling
+│       └── colors.py   # Terminal color schemes
 │
 ├── tests/
 │   ├── __init__.py
@@ -81,8 +76,7 @@ Each card has a point value (points are penalties - lower is better):
 │   └── test_rules.py
 │
 └── docs/
-    ├── design.md       # Technical design document
-    └── ai_strategy.md  # AI implementation details
+    └── design.md       # Technical design document
 ```
 
 ## Implementation Plan
@@ -95,10 +89,11 @@ Each card has a point value (points are penalties - lower is better):
 - [ ] Add scoring system
 
 ### Phase 2: Player Management
-- [ ] Create Player base class
-- [ ] Implement HumanPlayer with input handling
+- [ ] Create Player class
+- [ ] Implement player input handling
 - [ ] Add hand management
 - [ ] Create turn selection mechanism
+- [ ] Support 3-10 players
 
 ### Phase 3: Game Flow
 - [ ] Implement Game class for round management
@@ -112,19 +107,20 @@ Each card has a point value (points are penalties - lower is better):
 - [ ] Add colored output for better readability
 - [ ] Implement clear game state visualization
 - [ ] Add input validation and error handling
+- [ ] Show all players' cards simultaneously after selection
 
-### Phase 5: AI Players
-- [ ] Create base AI player class
-- [ ] Implement simple AI (random/basic strategy)
-- [ ] Add intermediate AI (avoid high penalties)
-- [ ] Create advanced AI (card counting, prediction)
-
-### Phase 6: Polish & Testing
+### Phase 5: Polish & Testing
 - [ ] Add comprehensive unit tests
 - [ ] Implement game statistics tracking
 - [ ] Add game save/load functionality
-- [ ] Create difficulty settings
 - [ ] Add tutorial mode
+- [ ] Create quick play options
+
+### Phase 6: Future Enhancements
+- [ ] Network multiplayer support
+- [ ] Computer opponents (if desired)
+- [ ] Tournament mode
+- [ ] Custom rule variations
 
 ## Technical Decisions
 
@@ -136,16 +132,24 @@ Each card has a point value (points are penalties - lower is better):
 - `pytest` - Testing framework
 - `typing` - Type hints for better code documentation
 
+### Multiplayer Approach
+- **Hot-seat multiplayer**: Players take turns at the same terminal
+- **Privacy handling**: Clear screen between players, show "Pass to Player X" prompts
+- **Card selection**: Hidden input mode where only the player can see their cards
+- **Simultaneous reveal**: Store selections, then show all at once
+
 ### Design Patterns
-- **Strategy Pattern**: For different AI difficulty levels
 - **Observer Pattern**: For game state updates and display
-- **Factory Pattern**: For creating players (human vs AI)
+- **Command Pattern**: For player actions and undo functionality
+- **State Pattern**: For game phases (setup, playing, scoring)
 
 ### Data Structures
 - **Card**: Class with value and point properties
 - **Row**: List with max size of 5 cards
 - **Table**: List of 4 Row objects
 - **Hand**: Set/List of Card objects per player
+- **Player**: Class containing name, hand, and score
+- **GameState**: Current round, turn, and player information
 
 ## Development Guidelines
 
@@ -182,15 +186,16 @@ Each card has a point value (points are penalties - lower is better):
 3. Implement Card and Deck classes
 4. Begin with core game logic
 
-## Notes for AI Assistant
+## Notes for Development
 - Keep terminal display simple but informative
-- Ensure game state is always clear to players
+- Ensure game state is always clear to all players
 - Prioritize game rule correctness over features
-- Make AI players challenging but not perfect
 - Consider accessibility (clear text, good contrast)
+- Support hot-seat multiplayer (players take turns at the same terminal)
 
 ## Questions to Resolve
-- Should we support network multiplayer in the future?
+- How to handle screen clearing between players (privacy for card selection)?
 - Should game history be saved between sessions?
 - What statistics should we track for players?
 - Should we add variations of the rules?
+- Should we add a "pass device" mode for mobile/tablet play?

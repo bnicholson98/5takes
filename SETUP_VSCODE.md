@@ -121,20 +121,18 @@ pip install -r requirements.txt
 Run this to create the full project structure:
 ```bash
 # Create directories
-mkdir -p src/game src/ui src/ai tests docs
+mkdir -p src/game src/ui tests docs
 
 # Create __init__.py files
 touch src/__init__.py
 touch src/game/__init__.py
 touch src/ui/__init__.py
-touch src/ai/__init__.py
 touch tests/__init__.py
 
 # Create main Python files
 touch src/main.py
 touch src/game/card.py src/game/player.py src/game/table.py src/game/game.py src/game/rules.py
 touch src/ui/display.py src/ui/input.py src/ui/colors.py
-touch src/ai/base_ai.py src/ai/easy_ai.py src/ai/hard_ai.py
 ```
 
 ## Verification

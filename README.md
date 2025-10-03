@@ -4,7 +4,9 @@ A Python implementation of the popular card game "5 Takes" (also known as "6 Nim
 
 ## About the Game
 
-5 Takes is a strategic card game where players simultaneously play cards, trying to avoid collecting penalty points. The player with the fewest points at the end wins!
+5 Takes is a strategic card game where players simultaneously play cards, trying to avoid collecting penalty points. The player with the fewest points at the end wins! 
+
+This is a local multiplayer game where players take turns at the same terminal/computer.
 
 ## Installation
 
@@ -42,7 +44,7 @@ python src/main.py
 
 #### Setup
 - 104 cards numbered 1-104
-- 3-10 players (human or AI)
+- 3-10 players
 - Each player gets 10 cards
 - 4 rows on the table, each starting with 1 card
 
@@ -65,11 +67,11 @@ The game ends when someone exceeds 50 points. The player with the lowest score w
 
 ## Features
 
-- **Single Player**: Play against AI opponents
-- **Multiplayer**: Local multiplayer for 3-10 players
-- **AI Difficulty**: Choose from Easy, Medium, or Hard AI opponents
+- **Local Multiplayer**: 3-10 players on the same device
+- **Privacy Mode**: Hidden card selection for each player
 - **Colorful Display**: Easy-to-read terminal interface
-- **Statistics**: Track your wins and average scores
+- **Statistics**: Track wins and average scores for each player
+- **Quick Setup**: Fast game initialization
 
 ## Controls
 
