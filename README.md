@@ -36,8 +36,21 @@ pip install -r requirements.txt
 ## How to Play
 
 ### Starting the Game
+
+**Option 1 (Recommended):**
 ```bash
-python src/main.py
+python run_game.py
+```
+
+**Option 2:**
+```bash
+cd src
+python main.py
+```
+
+**Option 3:**
+```bash
+python -m src.main
 ```
 
 ### Game Rules
