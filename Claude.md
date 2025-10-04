@@ -110,7 +110,7 @@ Each card has a point value (points are penalties - lower is better):
 - [x] Show all players' cards simultaneously after selection
 
 ### Phase 5: Polish & Testing
-- [ ] Add comprehensive unit tests
+- [x] Add comprehensive unit tests
 - [ ] Implement game statistics tracking
 - [ ] Add game save/load functionality
 - [ ] Add tutorial mode
@@ -185,6 +185,7 @@ Each card has a point value (points are penalties - lower is better):
 - ✅ Terminal UI with colors and formatting
 - ✅ Local multiplayer with privacy handling
 - ✅ Full playable game ready
+- ✅ Comprehensive unit tests (93 tests, 100% coverage for game logic)
 
 ## Next Steps
 1. ✅ Set up Python virtual environment
@@ -192,7 +193,7 @@ Each card has a point value (points are penalties - lower is better):
 3. ✅ Implement Card and Deck classes
 4. ✅ Begin with core game logic
 5. ✅ Complete all core phases
-6. Add comprehensive testing (Phase 5)
+6. ✅ Add comprehensive testing (Phase 5)
 7. Add game statistics and enhancements (Phase 5)
 8. Consider future enhancements (Phase 6)
 
