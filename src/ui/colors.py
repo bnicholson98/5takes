@@ -33,7 +33,14 @@ class Colors:
     
     @classmethod
     def card_color(cls, points: int) -> str:
-        """Get color code for card based on point value."""
+        """Get color code for card based on point value.
+        
+        Args:
+            points: Penalty points of the card
+            
+        Returns:
+            ANSI color code string
+        """
         if points >= 5:
             return cls.CARD_HIGH_POINTS
         elif points >= 3:
@@ -45,13 +52,29 @@ class Colors:
     
     @classmethod
     def colored_card(cls, value: int, points: int) -> str:
-        """Get colored string representation of card."""
+        """Get colored string representation of card.
+        
+        Args:
+            value: Card value (1-104)
+            points: Card penalty points
+            
+        Returns:
+            Colored card string like '[  42]'
+        """
         color = cls.card_color(points)
         return f"{color}[{value:3d}]{cls.RESET}"
     
     @classmethod
     def colored_text(cls, text: str, color: str) -> str:
-        """Apply color to text."""
+        """Apply color to text.
+        
+        Args:
+            text: Text to colorize
+            color: ANSI color code
+            
+        Returns:
+            Colored text with reset at end
+        """
         return f"{color}{text}{cls.RESET}"
     
     @staticmethod
@@ -61,12 +84,22 @@ class Colors:
     
     @staticmethod
     def print_separator(width: int = 60, char: str = "=") -> None:
-        """Print a separator line."""
+        """Print a separator line.
+        
+        Args:
+            width: Width of separator line
+            char: Character to use for separator
+        """
         print(char * width)
     
     @staticmethod
     def print_centered(text: str, width: int = 60) -> None:
-        """Print text centered within given width."""
+        """Print text centered within given width.
+        
+        Args:
+            text: Text to center
+            width: Total width for centering
+        """
         print(text.center(width))
 
 

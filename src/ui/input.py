@@ -19,7 +19,11 @@ class InputHandler:
     
     @staticmethod
     def get_player_names() -> List[str]:
-        """Get player names from user input."""
+        """Get player names from user input.
+        
+        Returns:
+            List of unique player names (3-10 players)
+        """
         GameDisplay.show_title()
         
         while True:
@@ -59,7 +63,15 @@ class InputHandler:
     
     @staticmethod
     def get_card_selection(player: Player, table: Table) -> Card:
-        """Get card selection from player."""
+        """Get card selection from player.
+        
+        Args:
+            player: Player making selection
+            table: Current table state for display
+            
+        Returns:
+            Selected card from player's hand
+        """
         colors.clear_screen()
         GameDisplay.show_round_header(0)  # Will be updated by caller
         GameDisplay.show_table(table)
@@ -96,7 +108,15 @@ class InputHandler:
     
     @staticmethod
     def get_row_choice(player: Player, table: Table) -> int:
-        """Get row choice when player must wipe a row."""
+        """Get row choice when player must wipe a row.
+        
+        Args:
+            player: Player who must choose
+            table: Table with rows to choose from
+            
+        Returns:
+            Zero-based row index (0-3)
+        """
         colors.clear_screen()
         GameDisplay.show_message(
             f"{player.name}: Your card is too low for all rows!", 
@@ -121,7 +141,11 @@ class InputHandler:
     
     @staticmethod
     def confirm_play_again() -> bool:
-        """Ask if players want to play another game."""
+        """Ask if players want to play another game.
+        
+        Returns:
+            True if players want another game
+        """
         while True:
             choice = GameDisplay.prompt_for_input("Play another game? (y/n): ").strip().lower()
             
@@ -134,7 +158,11 @@ class InputHandler:
     
     @staticmethod
     def show_round_start(round_num: int) -> None:
-        """Show round start screen."""
+        """Show round start screen.
+        
+        Args:
+            round_num: Round number starting
+        """
         colors.clear_screen()
         GameDisplay.show_title()
         GameDisplay.show_message(f"Starting Round {round_num}...", "info")
@@ -142,13 +170,23 @@ class InputHandler:
     
     @staticmethod
     def show_turn_start(round_num: int, turn_num: int) -> None:
-        """Show turn start information."""
+        """Show turn start information.
+        
+        Args:
+            round_num: Current round number
+            turn_num: Current turn number
+        """
         colors.clear_screen()
         GameDisplay.show_round_header(round_num, turn_num)
     
     @staticmethod
     def show_turn_results(results: List[Tuple[Player, Card, int, Optional[List[Card]]]], table: Table) -> None:
-        """Display turn results and wait for confirmation."""
+        """Display turn results and wait for confirmation.
+        
+        Args:
+            results: List of (player, card, row_index, wiped_cards) tuples
+            table: Updated table state
+        """
         colors.clear_screen()
         GameDisplay.show_turn_results(results)
         GameDisplay.show_table(table)
@@ -156,7 +194,12 @@ class InputHandler:
     
     @staticmethod
     def show_round_end(players: List[Player], round_num: int) -> None:
-        """Show round end scores."""
+        """Show round end scores.
+        
+        Args:
+            players: List of players with updated scores
+            round_num: Round number that just ended
+        """
         colors.clear_screen()
         GameDisplay.show_message(f"Round {round_num} Complete!", "success")
         GameDisplay.show_scores(players, show_round_scores=True)

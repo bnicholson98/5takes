@@ -22,7 +22,14 @@ class Game:
     """Main game controller managing rounds and turns."""
     
     def __init__(self, player_names: List[str]):
-        """Initialize game with list of player names."""
+        """Initialize game with list of player names.
+        
+        Args:
+            player_names: List of unique player names (3-10 players)
+            
+        Raises:
+            ValueError: If player count or names are invalid
+        """
         GameRules.validate_player_count(len(player_names))
         GameRules.validate_player_names(player_names)
         
@@ -34,22 +41,38 @@ class Game:
     
     @property
     def players(self) -> List[Player]:
-        """Get list of all players."""
+        """Get list of all players.
+        
+        Returns:
+            Copy of players list
+        """
         return self._players.copy()
     
     @property
     def table(self) -> Optional[Table]:
-        """Get current table state."""
+        """Get current table state.
+        
+        Returns:
+            Current table or None if no round started
+        """
         return self._table
     
     @property
     def state(self) -> GameState:
-        """Get current game state."""
+        """Get current game state.
+        
+        Returns:
+            Current game state object
+        """
         return self._state
     
     @property
     def turn_results(self) -> List[Tuple[Player, Card, int, Optional[List[Card]]]]:
-        """Get results from the last turn."""
+        """Get results from the last turn.
+        
+        Returns:
+            List of (player, card, row_index, wiped_cards) tuples
+        """
         return self._turn_results.copy()
     
     def start_new_round(self) -> None:
@@ -73,16 +96,35 @@ class Game:
             player.deal_cards(cards)
     
     def select_card_for_player(self, player: Player, card: Card) -> None:
-        """Select a card for a specific player."""
+        """Select a card for a specific player.
+        
+        Args:
+            player: Player making selection
+            card: Card to select
+            
+        Raises:
+            ValueError: If selection is invalid
+        """
         GameRules.validate_card_selection(player, card)
         player.select_card(card)
     
     def all_players_selected(self) -> bool:
-        """Check if all players have selected cards."""
+        """Check if all players have selected cards.
+        
+        Returns:
+            True if all players have selected cards
+        """
         return GameRules.all_players_selected(self._players)
     
     def process_turn(self) -> List[Tuple[Player, Card, int, Optional[List[Card]]]]:
-        """Process a complete turn with all player selections."""
+        """Process a complete turn with all player selections.
+        
+        Returns:
+            List of (player, card, row_index, wiped_cards) results
+            
+        Raises:
+            ValueError: If not all players have selected cards
+        """
         if not self.all_players_selected():
             raise ValueError("Not all players have selected cards")
         
@@ -109,7 +151,15 @@ class Game:
         return self._turn_results.copy()
     
     def _process_forced_wipe(self, player: Player, card: Card) -> Tuple[int, List[Card]]:
-        """Handle when player must choose a row to wipe."""
+        """Handle when player must choose a row to wipe.
+        
+        Args:
+            player: Player forced to wipe
+            card: Card being played
+            
+        Returns:
+            Tuple of (row_index, wiped_cards)
+        """
         row_choices = self._table.get_row_choices()
         
         if hasattr(player, '_forced_row_choice'):
@@ -121,21 +171,45 @@ class Game:
         return self._table.place_card(card, forced_row=row_choice)
     
     def _get_row_choice_for_player(self, player: Player, choices: List[int]) -> int:
-        """Get row choice from player (to be overridden by UI layer)."""
+        """Get row choice from player (to be overridden by UI layer).
+        
+        Args:
+            player: Player making choice
+            choices: Available row indices
+            
+        Returns:
+            Selected row index
+        """
         return min(choices)
     
     def set_forced_row_choice(self, player: Player, row_index: int) -> None:
-        """Set the row choice for a player who must wipe a row."""
+        """Set the row choice for a player who must wipe a row.
+        
+        Args:
+            player: Player making choice
+            row_index: Row index (0-3) to wipe
+            
+        Raises:
+            ValueError: If row index is invalid
+        """
         if not 0 <= row_index < GameRules.STARTING_ROWS:
             raise ValueError(f"Row index must be 0-{GameRules.STARTING_ROWS-1}")
         setattr(player, '_forced_row_choice', row_index)
     
     def is_round_over(self) -> bool:
-        """Check if current round is finished."""
+        """Check if current round is finished.
+        
+        Returns:
+            True if all players have empty hands
+        """
         return GameRules.is_round_over(self._players)
     
     def check_game_end(self) -> bool:
-        """Check if game should end and set winner."""
+        """Check if game should end and set winner.
+        
+        Returns:
+            True if game has ended
+        """
         if GameRules.is_game_over(self._players):
             self._state.is_game_over = True
             self._state.winner = GameRules.find_winner(self._players)
@@ -143,11 +217,22 @@ class Game:
         return False
     
     def get_scores(self) -> List[Tuple[str, int, int]]:
-        """Get current scores for all players (name, round_score, total_score)."""
+        """Get current scores for all players.
+        
+        Returns:
+            List of (name, round_score, total_score) tuples
+        """
         return [(p.name, p.round_score, p.total_score) for p in self._players]
     
     def get_player_by_name(self, name: str) -> Optional[Player]:
-        """Find player by name."""
+        """Find player by name.
+        
+        Args:
+            name: Player name to search for
+            
+        Returns:
+            Player with matching name or None
+        """
         for player in self._players:
             if player.name == name:
                 return player
@@ -159,7 +244,11 @@ class Game:
             player.clear_selection()
     
     def get_players_needing_row_choice(self) -> List[Player]:
-        """Get players who need to choose a row to wipe."""
+        """Get players who need to choose a row to wipe.
+        
+        Returns:
+            List of players whose selected cards force row wipes
+        """
         needing_choice = []
         for player in self._players:
             if (player.has_selected_card and 

@@ -27,7 +27,12 @@ class GameDisplay:
     
     @staticmethod
     def show_round_header(round_num: int, turn_num: int = 0) -> None:
-        """Display round and turn information."""
+        """Display round and turn information.
+        
+        Args:
+            round_num: Current round number
+            turn_num: Current turn number (0 for no turn info)
+        """
         if turn_num > 0:
             header = f"Round {round_num} - Turn {turn_num}"
         else:
@@ -38,7 +43,11 @@ class GameDisplay:
     
     @staticmethod
     def show_table(table: Table) -> None:
-        """Display current table state."""
+        """Display current table state.
+        
+        Args:
+            table: Table to display
+        """
         print(colors.colored_text("Table:", colors.HEADER))
         for i, row in enumerate(table.rows):
             row_text = f"Row {i+1}: "
@@ -50,7 +59,12 @@ class GameDisplay:
     
     @staticmethod
     def show_player_hand(player: Player, show_indices: bool = True) -> None:
-        """Display player's hand with optional indices."""
+        """Display player's hand with optional indices.
+        
+        Args:
+            player: Player whose hand to show
+            show_indices: Whether to show card selection numbers
+        """
         print(colors.colored_text(f"{player.name}'s Hand:", colors.PLAYER_NAME))
         
         hand = player.hand
@@ -81,7 +95,12 @@ class GameDisplay:
     
     @staticmethod
     def show_scores(players: List[Player], show_round_scores: bool = False) -> None:
-        """Display player scores."""
+        """Display player scores.
+        
+        Args:
+            players: List of players to show scores for
+            show_round_scores: Whether to show current round scores
+        """
         print(colors.colored_text("Scores:", colors.HEADER))
         
         for player in players:
@@ -100,7 +119,11 @@ class GameDisplay:
     
     @staticmethod
     def show_turn_results(results: List[Tuple[Player, Card, int, Optional[List[Card]]]]) -> None:
-        """Display results of a turn."""
+        """Display results of a turn.
+        
+        Args:
+            results: List of (player, card, row_index, wiped_cards) tuples
+        """
         print(colors.colored_text("Turn Results:", colors.HEADER))
         
         for player, card, row_index, wiped_cards in results:
@@ -119,7 +142,11 @@ class GameDisplay:
     
     @staticmethod
     def show_card_selections(players: List[Player]) -> None:
-        """Display all players' selected cards."""
+        """Display all players' selected cards.
+        
+        Args:
+            players: List of players with selected cards
+        """
         print(colors.colored_text("Selected Cards:", colors.HEADER))
         
         selected_players = [(p, p.selected_card) for p in players if p.has_selected_card]
@@ -132,7 +159,11 @@ class GameDisplay:
     
     @staticmethod
     def show_row_choices(table: Table) -> None:
-        """Display rows for selection when wiping."""
+        """Display rows for selection when wiping.
+        
+        Args:
+            table: Table with rows to choose from
+        """
         print(colors.colored_text("Choose a row to take:", colors.WARNING))
         
         for i, row in enumerate(table.rows):
@@ -144,7 +175,12 @@ class GameDisplay:
     
     @staticmethod
     def show_game_over(winner: Player, final_scores: List[Tuple[str, int, int]]) -> None:
-        """Display game over screen with winner and final scores."""
+        """Display game over screen with winner and final scores.
+        
+        Args:
+            winner: Winning player
+            final_scores: List of (name, round_score, total_score) tuples
+        """
         colors.clear_screen()
         colors.print_separator()
         colors.print_centered(colors.colored_text("GAME OVER", colors.HEADER))
@@ -165,12 +201,24 @@ class GameDisplay:
     
     @staticmethod
     def prompt_for_input(message: str) -> str:
-        """Display input prompt with consistent formatting."""
+        """Display input prompt with consistent formatting.
+        
+        Args:
+            message: Prompt message to display
+            
+        Returns:
+            User's input string
+        """
         return input(colors.colored_text(message, colors.PROMPT))
     
     @staticmethod
     def show_message(message: str, message_type: str = "info") -> None:
-        """Display a message with appropriate color."""
+        """Display a message with appropriate color.
+        
+        Args:
+            message: Message to display
+            message_type: Type of message (info, success, warning, error)
+        """
         color_map = {
             "info": colors.INFO,
             "success": colors.SUCCESS,
@@ -183,13 +231,21 @@ class GameDisplay:
     
     @staticmethod
     def wait_for_enter(message: str = "Press Enter to continue...") -> None:
-        """Wait for user to press Enter."""
+        """Wait for user to press Enter.
+        
+        Args:
+            message: Message to show while waiting
+        """
         input(colors.colored_text(message, colors.PROMPT))
         print()
     
     @staticmethod
     def show_pass_device_prompt(player_name: str) -> None:
-        """Display prompt to pass device to next player."""
+        """Display prompt to pass device to next player.
+        
+        Args:
+            player_name: Name of player who should receive device
+        """
         colors.clear_screen()
         colors.print_separator()
         colors.print_centered(f"Pass device to {player_name}")

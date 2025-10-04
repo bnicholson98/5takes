@@ -30,7 +30,7 @@ class GameController:
         GameDisplay.show_message("Thanks for playing!", "success")
     
     def _play_game(self) -> None:
-        """Play a complete game."""
+        """Play a complete game until someone exceeds 50 points."""
         player_names = InputHandler.get_player_names()
         self._game = Game(player_names)
         
@@ -49,7 +49,7 @@ class GameController:
         )
     
     def _play_round(self) -> None:
-        """Play a complete round."""
+        """Play a complete round (10 turns)."""
         self._game.start_new_round()
         
         InputHandler.show_round_start(self._game.state.round_number)
@@ -58,7 +58,7 @@ class GameController:
             self._play_turn()
     
     def _play_turn(self) -> None:
-        """Play a single turn."""
+        """Play a single turn with all players selecting cards."""
         InputHandler.show_turn_start(
             self._game.state.round_number,
             self._game.state.turn_number + 1
@@ -73,7 +73,7 @@ class GameController:
         InputHandler.show_turn_results(results, self._game.table)
     
     def _collect_card_selections(self) -> None:
-        """Collect card selections from all players."""
+        """Collect card selections from all players with privacy handling."""
         for player in self._game.players:
             GameDisplay.show_pass_device_prompt(player.name)
             
@@ -89,7 +89,10 @@ class GameController:
             GameDisplay.wait_for_enter("Press Enter to continue...")
     
     def _handle_forced_row_choices(self) -> None:
-        """Handle players who need to choose rows to wipe."""
+        """Handle players who need to choose rows to wipe.
+        
+        Processes players whose cards are too low for any row.
+        """
         players_needing_choice = self._game.get_players_needing_row_choice()
         
         for player in players_needing_choice:
@@ -104,7 +107,10 @@ class GameController:
 
 
 def main() -> None:
-    """Main function to start the game."""
+    """Main function to start the game.
+    
+    Entry point that handles initialization and error handling.
+    """
     try:
         controller = GameController()
         controller.run()
