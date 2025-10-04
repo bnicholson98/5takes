@@ -189,3 +189,23 @@ Each card has a point value (points are penalties - lower is better):
 ## Next Steps
 1. ✅ Set up Python virtual environment
 2. ✅ Create basic project structure
+3. ✅ Implement Card and Deck classes
+4. ✅ Begin with core game logic
+5. ✅ Complete all core phases
+6. Add comprehensive testing (Phase 5)
+7. Add game statistics and enhancements (Phase 5)
+8. Consider future enhancements (Phase 6)
+
+## Notes for Development
+- Keep terminal display simple but informative
+- Ensure game state is always clear to all players
+- Prioritize game rule correctness over features
+- Consider accessibility (clear text, good contrast)
+- Support hot-seat multiplayer (players take turns at the same terminal)
+
+## Questions to Resolve
+- How to handle screen clearing between players (privacy for card selection)?
+- Should game history be saved between sessions?
+- What statistics should we track for players?
+- Should we add variations of the rules?
+- Should we add a "pass device" mode for mobile/tablet play?

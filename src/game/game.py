@@ -243,16 +243,29 @@ class Game:
         for player in self._players:
             player.clear_selection()
     
-    def get_players_needing_row_choice(self) -> List[Player]:
+    def get_players_needing_row_choice(self) -> List[Tuple[Player, Card]]:
         """Get players who need to choose a row to wipe.
         
         Returns:
-            List of players whose selected cards force row wipes
+            List of (player, card) tuples for players who must wipe
         """
         needing_choice = []
-        for player in self._players:
-            if (player.has_selected_card and 
-                self._table and 
-                self._table.must_wipe_row(player.selected_card)):
-                needing_choice.append(player)
+        sorted_players = GameRules.sort_players_by_card_value(self._players)
+        
+        temp_table = Table([row.cards[0] for row in self._table.rows])
+        for row_idx, row in enumerate(self._table.rows):
+            for card in row.cards[1:]:
+                temp_table.get_row(row_idx)._cards.append(card)
+        
+        for player in sorted_players:
+            if player.has_selected_card:
+                if temp_table.must_wipe_row(player.selected_card):
+                    needing_choice.append((player, player.selected_card))
+                    # Player wipes a row, so update temp table for next check
+                    # For simplicity, we'll just use row 0 as placeholder
+                    temp_table.get_row(0)._cards = [player.selected_card]
+                else:
+                    # Place card normally on temp table
+                    temp_table.place_card(player.selected_card)
+        
         return needing_choice

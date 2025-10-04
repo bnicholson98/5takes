@@ -29,8 +29,12 @@ class InputHandler:
         while True:
             try:
                 count_input = GameDisplay.prompt_for_input(
-                    "Enter number of players (3-10): "
+                    "Enter number of players (3-10, or 'q' to quit): "
                 )
+                
+                if count_input.strip().lower() == 'q':
+                    raise KeyboardInterrupt("User quit game")
+                
                 player_count = int(count_input.strip())
                 
                 if not 3 <= player_count <= 10:
@@ -62,26 +66,40 @@ class InputHandler:
         return names
     
     @staticmethod
-    def get_card_selection(player: Player, table: Table) -> Card:
+    def get_card_selection(player: Player, table: Table, round_num: int = 1, turn_num: int = 1) -> Card:
         """Get card selection from player.
         
         Args:
             player: Player making selection
             table: Current table state for display
+            round_num: Current round number
+            turn_num: Current turn number
             
         Returns:
             Selected card from player's hand
         """
         colors.clear_screen()
-        GameDisplay.show_round_header(0)  # Will be updated by caller
+        GameDisplay.show_round_header(round_num, turn_num)
         GameDisplay.show_table(table)
+        
+        # Auto-select if only one card left
+        if player.hand_size == 1:
+            card = player.hand[0]
+            GameDisplay.show_player_hand(player, show_indices=False)
+            GameDisplay.show_message(f"Auto-selecting your last card: [{card.value}]", "info")
+            GameDisplay.wait_for_enter("Press Enter to continue...")
+            return card
+        
         GameDisplay.show_player_hand(player, show_indices=True)
         
         while True:
             try:
                 selection = GameDisplay.prompt_for_input(
-                    f"Select a card (1-{player.hand_size}): "
+                    f"Select a card (1-{player.hand_size}, or 'q' to quit): "
                 )
+                
+                if selection.strip().lower() == 'q':
+                    raise KeyboardInterrupt("User quit game")
                 
                 index = int(selection.strip()) - 1
                 
@@ -107,12 +125,13 @@ class InputHandler:
                 GameDisplay.show_message("Invalid selection", "error")
     
     @staticmethod
-    def get_row_choice(player: Player, table: Table) -> int:
+    def get_row_choice(player: Player, table: Table, all_selections: List[Tuple[str, Card]]) -> int:
         """Get row choice when player must wipe a row.
         
         Args:
             player: Player who must choose
             table: Table with rows to choose from
+            all_selections: List of (player_name, card) tuples for all selections
             
         Returns:
             Zero-based row index (0-3)
@@ -122,12 +141,24 @@ class InputHandler:
             f"{player.name}: Your card is too low for all rows!", 
             "warning"
         )
+        
+        if all_selections:
+            print(colors.colored_text("Cards being played this turn:", colors.INFO))
+            for name, card in sorted(all_selections, key=lambda x: x[1].value):
+                card_text = colors.colored_card(card.value, card.points)
+                print(f"  {colors.colored_text(name, colors.PLAYER_NAME)}: {card_text}")
+            print()
+        
         GameDisplay.show_table(table)
         GameDisplay.show_row_choices(table)
         
         while True:
             try:
-                choice = GameDisplay.prompt_for_input("Choose row to take (1-4): ")
+                choice = GameDisplay.prompt_for_input("Choose row to take (1-4, or 'q' to quit): ")
+                
+                if choice.strip().lower() == 'q':
+                    raise KeyboardInterrupt("User quit game")
+                
                 row_index = int(choice.strip()) - 1
                 
                 if not 0 <= row_index < 4:

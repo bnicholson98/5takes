@@ -79,7 +79,9 @@ class GameController:
             
             selected_card = InputHandler.get_card_selection(
                 player, 
-                self._game.table
+                self._game.table,
+                self._game.state.round_number,
+                self._game.state.turn_number + 1
             )
             
             self._game.select_card_for_player(player, selected_card)
@@ -95,10 +97,15 @@ class GameController:
         """
         players_needing_choice = self._game.get_players_needing_row_choice()
         
-        for player in players_needing_choice:
+        # Get all selections for display
+        all_selections = [(p.name, p.selected_card) 
+                         for p in self._game.players 
+                         if p.has_selected_card]
+        
+        for player, card in players_needing_choice:
             GameDisplay.show_pass_device_prompt(player.name)
             
-            row_choice = InputHandler.get_row_choice(player, self._game.table)
+            row_choice = InputHandler.get_row_choice(player, self._game.table, all_selections)
             self._game.set_forced_row_choice(player, row_choice)
             
             colors.clear_screen()
@@ -115,7 +122,9 @@ def main() -> None:
         controller = GameController()
         controller.run()
     except KeyboardInterrupt:
-        print("\n\nGame interrupted by user.")
+        colors.clear_screen()
+        print(colors.colored_text("\n\nThanks for playing 5 Takes!", colors.SUCCESS))
+        print(colors.colored_text("Game ended by user.", colors.INFO))
     except Exception as e:
         print(f"\nAn error occurred: {e}")
         import traceback
